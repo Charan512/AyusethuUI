@@ -16,14 +16,25 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (phone, password) => {
-    const res = await AuthService.login({ phone, password });
+  const login = async (email, password) => {
+    const res = await AuthService.login({ email, password });
     if (res.data.success) {
       const { token, user: userData } = res.data.data;
       localStorage.setItem('ayusethu_token', token);
       localStorage.setItem('ayusethu_user', JSON.stringify(userData));
       setUser(userData);
       return userData;
+    }
+  };
+
+  const register = async (userData) => {
+    const res = await AuthService.register(userData);
+    if (res.data.success) {
+      const { token, user: newUserData } = res.data.data;
+      localStorage.setItem('ayusethu_token', token);
+      localStorage.setItem('ayusethu_user', JSON.stringify(newUserData));
+      setUser(newUserData);
+      return newUserData;
     }
   };
 
@@ -35,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );

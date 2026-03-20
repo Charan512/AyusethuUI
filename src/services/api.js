@@ -14,6 +14,7 @@ api.interceptors.request.use((config) => {
 
 export const AuthService = {
   login: (credentials) => api.post('/auth/login', credentials),
+  register: (data) => api.post('/auth/register', data)
 };
 
 export const CollectorService = {

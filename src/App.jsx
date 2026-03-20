@@ -4,6 +4,8 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import DashboardShell from './components/DashboardShell';
 import ConsumerTimeline from './components/ConsumerTimeline';
 import LoginView from './components/LoginView';
+import RegisterView from './components/RegisterView';
+import Landing from './pages/Landing';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -14,9 +16,12 @@ const ProtectedRoute = ({ children }) => {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginView />} />
+      <Route path="/" element={<Landing />}>
+        <Route path="login" element={<LoginView />} />
+        <Route path="register" element={<RegisterView />} />
+      </Route>
       <Route path="/verify/:batchId" element={<ConsumerTimeline />} />
-      <Route path="/" element={
+      <Route path="/dashboard" element={
         <ProtectedRoute>
           {/* DashboardShell handles the active internal routing based on role */}
         </ProtectedRoute>
