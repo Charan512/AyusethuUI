@@ -24,40 +24,42 @@ export default function LoginView() {
   };
 
   return (
-    <div className="bg-white/85 backdrop-blur-2xl p-8 rounded-2xl shadow-2xl ring-1 ring-white/40 w-full max-w-[340px] border border-white/60 relative">
-        <h2 className="text-2xl font-bold text-forest-dark text-center mb-2 tracking-tight">AyuSethu</h2>
-        <p className="text-center text-sm text-gray-500 mb-6 font-medium">Network Partner Portal</p>
+    <div className="bg-white/25 backdrop-blur-2xl xl:backdrop-blur-3xl px-8 py-10 rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] ring-1 ring-white/30 w-full max-w-[340px] border border-white/20 relative">
+        <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight drop-shadow-sm">AyuSethu</h2>
+        <p className="text-center text-[15px] text-white/80 mb-6 font-medium">Network Partner Portal</p>
         
         {error && (
-           <div className="bg-red-50 text-red-600 text-sm p-4 rounded-xl mb-6 font-semibold border border-red-100 text-center">
+           <div className="bg-red-500/20 backdrop-blur-md text-red-100 text-sm p-4 rounded-xl mb-6 font-semibold border border-red-500/30 text-center shadow-inner">
              {error}
            </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5 mt-5">
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-white/90 uppercase tracking-widest mb-1.5 drop-shadow-sm">Email Address</label>
             <input 
               type="email"
-              className="w-full px-3 py-2 bg-white/60 border border-gray-200 rounded-md focus:ring-2 focus:ring-forest outline-none transition-all focus:bg-white text-sm" 
+              className="w-full px-3.5 py-2.5 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-forest-light focus:border-white/30 outline-none transition-all focus:bg-white/10 text-white placeholder-white/40 text-[15px] shadow-inner backdrop-blur-md" 
                value={email} onChange={e => setEmail(e.target.value)} 
+               placeholder="partner@ayusethu.com"
                required
             />
           </div>
           <div>
-             <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Password</label>
+             <label className="block text-xs font-bold text-white/90 uppercase tracking-widest mb-1.5 drop-shadow-sm">Password</label>
              <input type="password"
-               className="w-full px-3 py-2 bg-white/60 border border-gray-200 rounded-md focus:ring-2 focus:ring-forest outline-none transition-all focus:bg-white text-sm" 
+               className="w-full px-3.5 py-2.5 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-forest-light focus:border-white/30 outline-none transition-all focus:bg-white/10 text-white placeholder-white/40 text-[15px] shadow-inner backdrop-blur-md" 
                value={password} onChange={e => setPassword(e.target.value)} 
+               placeholder="••••••••"
              />
           </div>
-          <button type="submit" className="w-full py-2 bg-forest text-white font-bold rounded-md shadow-lg hover:bg-forest-light hover:shadow-xl hover:-translate-y-0.5 transition-all tracking-wide text-sm mt-4">
+          <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-forest to-forest-light text-white font-bold rounded-xl shadow-[0_4px_15px_rgba(34,197,94,0.3)] hover:shadow-[0_6px_20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5 transition-all tracking-wide text-[15px] mt-8 border border-white/20">
             Secure Login
           </button>
         </form>
 
-        <p className="text-center text-[13px] text-gray-800 mt-6 font-medium">
-          New network partner? <a href="/register" className="text-forest-dark hover:text-forest hover:underline font-bold transition-colors">Register here</a>
+        <p className="text-center text-[13px] text-white/70 mt-8 font-medium">
+          New network partner? <a href="/register" className="text-forest-light hover:text-white hover:underline font-bold transition-all drop-shadow-md">Register here</a>
         </p>
     </div>
   );
