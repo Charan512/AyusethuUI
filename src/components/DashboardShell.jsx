@@ -16,6 +16,8 @@ import CollectorView from './CollectorView';
 import LabView from './LabView';
 import AdminView from './AdminView';
 import ManufacturerView from './ManufacturerView';
+import NotificationDropdown from './NotificationDropdown';
+import { NotificationService } from '../services/api';
 
 // ── Shared Dashboard Shell ──────────────────────────────────────────
 export default function DashboardShell({ children }) {
@@ -25,14 +27,17 @@ export default function DashboardShell({ children }) {
 
   useEffect(() => {
     if (!user) return;
+
+    NotificationService.fetchHistory()
+      .then(res => {
+        if (res.data?.success) setNotifications(res.data.data);
+      })
+      .catch(err => console.warn('History fetch failed', err));
+
     const socketUrl = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:5001';
     const socket = io(socketUrl);
     
     socket.emit('joinRole', user.role);
-    socket.on('new_notification', (notif) => {
-      setNotifications(prev => [notif, ...prev]);
-    });
-
     return () => socket.disconnect();
   }, [user]);
 
@@ -82,12 +87,7 @@ export default function DashboardShell({ children }) {
             </div>
             
             <div className="relative">
-              <Bell size={24} className="text-gray-400 hover:text-forest transition-colors cursor-pointer" />
-              {notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow">
-                  {notifications.length}
-                </span>
-              )}
+              <NotificationDropdown notifications={notifications} setNotifications={setNotifications} />
             </div>
 
             <div className="h-8 w-px bg-gray-200" />

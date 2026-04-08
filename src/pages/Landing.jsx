@@ -113,7 +113,8 @@ const Landing = () => {
   ];
 
   return (
-    <div className={styles.container}>
+    <>
+      <div className={styles.container}>
       {/* NAVBAR */}
       <div className={styles.navbar}>
         <nav>
@@ -405,6 +406,7 @@ const Landing = () => {
           </div>
         </div>
       </footer>
+      </div>
 
       {/* GLASSMORPHIC OVERLAY FOR AUTH */}
       {isAuthModalOpen && (
@@ -412,7 +414,7 @@ const Landing = () => {
           <Outlet />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

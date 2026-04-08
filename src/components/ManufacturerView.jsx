@@ -9,8 +9,8 @@ export default function ManufacturerView() {
   const handleMintQR = async (batchId) => {
     setLoading(true);
     try {
-      // Connecting to the backend finalize endpoint
-      const res = await axios.post(`http://localhost:5001/api/v1/manufacturer/auction/${batchId}/finalize`, {}, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001/api/v1';
+      const res = await axios.post(`${apiUrl}/manufacturer/auction/${batchId}/finalize`, {}, {
          headers: { Authorization: `Bearer ${localStorage.getItem('ayusethu_token')}` }
       });
       setQrModal(res.data.data.qrCode);

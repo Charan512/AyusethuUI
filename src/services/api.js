@@ -28,4 +28,9 @@ export const ConsumerService = {
   getTimeline: (batchId) => api.get(`/verify/${batchId}`),
 };
 
+export const NotificationService = {
+  fetchHistory: () => api.get('/notifications'),
+  markRead: (id) => api.put(`/notifications/${id}/read`)
+};
+
 export default api;
