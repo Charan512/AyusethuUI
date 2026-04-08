@@ -161,7 +161,7 @@ export default function ConsumerTimeline() {
   if (loading) return <SkeletonLoader />;
   if (error || !data) return <ErrorState message={error} />;
 
-  const { product, nodes, speciesName } = data;
+  const { product = {}, nodes = {}, speciesName } = data;
   const { farmOrigin, collectorVerification, labQuality, manufacturer } = nodes;
 
   const labPassed = labQuality?.finalDecision === 'PASS';
