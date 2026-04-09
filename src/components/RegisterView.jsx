@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-
+import { Link } from 'react-router-dom';
 const INPUT_CLS = "w-full px-3.5 py-2.5 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-forest-light focus:border-white/30 outline-none transition-all focus:bg-white/10 text-white placeholder-white/40 text-[15px] shadow-inner backdrop-blur-md";
 const LABEL_CLS = "block text-xs font-bold text-white/90 uppercase tracking-widest mb-1.5 drop-shadow-sm";
 
@@ -52,6 +52,9 @@ export default function RegisterView() {
 
   return (
     <div className="bg-white/25 backdrop-blur-2xl xl:backdrop-blur-3xl px-8 py-10 rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] ring-1 ring-white/30 w-full max-w-[380px] border border-white/20 relative my-8">
+      <Link to="/" className="absolute top-4 right-5 text-white/50 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </Link>
       <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight drop-shadow-sm">Join AyuSethu</h2>
       <p className="text-center text-[15px] text-white/80 mb-6 font-medium">Register as a Network Partner</p>
 

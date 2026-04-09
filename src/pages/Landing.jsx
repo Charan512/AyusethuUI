@@ -410,8 +410,13 @@ const Landing = () => {
 
       {/* GLASSMORPHIC OVERLAY FOR AUTH */}
       {isAuthModalOpen && (
-        <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-sm flex items-center justify-center overflow-y-auto p-4 sm:pt-20 sm:pb-10">
-          <Outlet />
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-sm flex items-center justify-center overflow-y-auto p-4 sm:pt-20 sm:pb-10 cursor-pointer"
+          onClick={() => navigate('/')}
+        >
+          <div className="cursor-auto w-full flex justify-center" onClick={(e) => e.stopPropagation()}>
+            <Outlet />
+          </div>
         </div>
       )}
     </>
