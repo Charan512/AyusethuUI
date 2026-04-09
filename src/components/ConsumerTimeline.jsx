@@ -166,6 +166,7 @@ export default function ConsumerTimeline() {
   const { farmOrigin, collectorVerification, labQuality, manufacturer } = nodes;
 
   const labPassed = labQuality?.finalDecision === 'PASS';
+  let currentStep = 1;
 
   const allStagesPhotos = [...(farmOrigin?.cropPhotos || [])].map(p => ({ ...p, label: `Stage ${p.stage} Progress` }));
   if (collectorVerification?.aiVerification?.leafPhotoUrl) {
@@ -259,7 +260,7 @@ export default function ConsumerTimeline() {
 
           {/* ── NODE 1: FARM ORIGIN ──────────────────────────────────────── */}
           {farmOrigin && (
-            <TNode icon={MapPin} label="Farm Origin" step={1}>
+            <TNode icon={MapPin} label="Farm Origin" step={currentStep++}>
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="px-4 pt-4 pb-2 border-b border-gray-50">
                   <p className="text-sm font-black text-gray-900">🌱 {speciesName}</p>
@@ -280,7 +281,7 @@ export default function ConsumerTimeline() {
 
           {/* ── NODE 2: COLLECTOR / AI ───────────────────────────────────── */}
           {collectorVerification && (
-            <TNode icon={Cpu} label="Collector Verification" step={2}>
+            <TNode icon={Cpu} label="Collector Verification" step={currentStep++}>
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="px-4 pt-3 pb-1">
                   <DataRow label="Harvest Date" value={collectorVerification.harvestDate ? new Date(collectorVerification.harvestDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null} />
@@ -319,7 +320,7 @@ export default function ConsumerTimeline() {
 
           {/* ── NODE 3: LAB QUALITY ──────────────────────────────────────── */}
           {labQuality && (
-            <TNode icon={FlaskConical} label="Scientific Quality Assurance" step={3}>
+            <TNode icon={FlaskConical} label="Scientific Quality Assurance" step={currentStep++}>
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 {/* Grade banner */}
                 <div className={`px-4 py-3 flex items-center justify-between border-b border-gray-100 ${labPassed ? 'bg-green-50' : 'bg-red-50'}`}>
@@ -395,7 +396,7 @@ export default function ConsumerTimeline() {
 
           {/* ── NODE 4: MANUFACTURER ─────────────────────────────────────── */}
           {manufacturer && (
-            <TNode icon={Factory} label="Formulation" step={4}>
+            <TNode icon={Factory} label="Formulation" step={currentStep++}>
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4">
                 <div className="flex items-start gap-3">
                   <div className="p-2.5 bg-gray-100 rounded-xl">
