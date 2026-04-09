@@ -50,7 +50,7 @@ export default function JobBoard({ onOpenForm }) {
   return (
     <div className="space-y-6">
 
-      {/* MY ASSIGNED BATCHES */}
+      {/* MY ASSIGNED BATCHES (ACTIVE) */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-bold text-gray-700 uppercase tracking-widest">My Active Samples</h3>
@@ -59,20 +59,19 @@ export default function JobBoard({ onOpenForm }) {
           </button>
         </div>
 
-        {mine.length === 0 ? (
-          <div className="border border-dashed border-gray-200 rounded-lg py-8 text-center text-gray-400">
+        {mine.filter(m => m.batch.status === 'LAB_ASSIGNED').length === 0 ? (
+          <div className="border border-dashed border-gray-200 rounded-lg py-8 text-center text-gray-400 mb-8">
             <Inbox size={32} className="mx-auto mb-2 opacity-40" />
-            <p className="text-sm">No samples currently assigned to you.</p>
+            <p className="text-sm">No active samples require your attention right now.</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {mine.map(({ batch, draftReport }) => {
+          <div className="space-y-3 mb-8">
+            {mine.filter(m => m.batch.status === 'LAB_ASSIGNED').map(({ batch, draftReport }) => {
               const farmer = batch?.farmerId;
               const hasDraft = !!draftReport;
-              const isComplete = batch.status === 'LAB_TESTED';
               return (
                 <div key={batch._id}
-                  className="border border-blue-200 bg-blue-50 rounded-lg p-4 flex items-start justify-between gap-4 flex-wrap">
+                  className="border border-blue-200 bg-blue-50 rounded-lg p-4 flex items-start justify-between gap-4 flex-wrap shadow-sm">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-blue-700 rounded-lg">
                       <FlaskConical size={18} className="text-white" />
@@ -86,9 +85,55 @@ export default function JobBoard({ onOpenForm }) {
                             DRAFT SAVED
                           </span>
                         )}
-                        {isComplete && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 border border-green-300 rounded flex items-center gap-1">
-                            <CheckCircle2 size={10} /> COMPLETED
+                      </div>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Farmer: <span className="font-semibold text-gray-700">{farmer?.name}</span>
+                        {' · '}{farmer?.farmerProfile?.location || 'Unknown location'}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onOpenForm({ batch, draftReport })}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded transition-colors flex-shrink-0 shadow-sm">
+                    <FlaskConical size={13} />
+                    {hasDraft ? 'Continue Entry Form' : 'Open Entry Form'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* COMPLETED TESTS (HISTORY) */}
+      <div>
+        <h3 className="text-sm font-bold text-gray-700 uppercase tracking-widest mb-3">Past Tested Samples (Log)</h3>
+        {mine.filter(m => m.batch.status !== 'LAB_ASSIGNED').length === 0 ? (
+          <div className="border border-dashed border-gray-200 rounded-lg py-6 text-center text-gray-400 mb-8">
+            <p className="text-sm">No historical log found.</p>
+          </div>
+        ) : (
+          <div className="space-y-3 mb-8">
+            {mine.filter(m => m.batch.status !== 'LAB_ASSIGNED').map(({ batch }) => {
+              const farmer = batch?.farmerId;
+              const isAuction = ['IN_AUCTION', 'SOLD'].includes(batch.status);
+              return (
+                <div key={batch._id}
+                  className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-start justify-between gap-4 flex-wrap opacity-70 hover:opacity-100 transition-opacity">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-gray-400 rounded-lg">
+                      <CheckCircle2 size={18} className="text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold text-gray-800">{batch.speciesName}</span>
+                        <span className="text-xs font-mono text-gray-500">{batch.batchId}</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 border border-green-300 rounded flex items-center gap-1">
+                          <CheckCircle2 size={10} /> TEST COMPLETED
+                        </span>
+                        {isAuction && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-100 text-purple-700 border border-purple-300 rounded">
+                            SENT TO MARKETPLACE
                           </span>
                         )}
                       </div>
@@ -98,14 +143,6 @@ export default function JobBoard({ onOpenForm }) {
                       </p>
                     </div>
                   </div>
-                  {!isComplete && (
-                    <button
-                      onClick={() => onOpenForm({ batch, draftReport })}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded transition-colors flex-shrink-0">
-                      <FlaskConical size={13} />
-                      {hasDraft ? 'Continue Entry Form' : 'Open Entry Form'}
-                    </button>
-                  )}
                 </div>
               );
             })}
