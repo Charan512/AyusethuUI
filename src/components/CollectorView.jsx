@@ -64,11 +64,25 @@ export default function CollectorView() {
   }).length;
   const harvestedCount = batches.filter(b => b.status === 'HARVESTED').length;
 
+  useEffect(() => {
+    const handlePopState = () => {
+      if (selectedBatch) {
+        setSelectedBatch(null);
+        loadFarmerFeed();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedBatch, loadFarmerFeed]);
+
   if (selectedBatch) {
     return (
       <FarmerDetailView
         batch={selectedBatch}
-        onBack={() => { setSelectedBatch(null); loadFarmerFeed(); }}
+        onBack={() => { 
+          // Going back manually pops our synthetic history state, which fires popstate automatically
+          window.history.back(); 
+        }}
       />
     );
   }
@@ -148,7 +162,10 @@ export default function CollectorView() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04 }}>
-                    <FarmerCard batch={batch} onClick={() => setSelectedBatch(batch)} />
+                    <FarmerCard batch={batch} onClick={() => {
+                      window.history.pushState({ internal: true }, '');
+                      setSelectedBatch(batch);
+                    }} />
                   </motion.div>
                 ))}
               </div>
