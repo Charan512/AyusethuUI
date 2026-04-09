@@ -118,9 +118,10 @@ function PhotoCarousel({ photos }) {
           </div>
         )}
       </div>
-      <p className="text-center text-xs text-gray-500 font-semibold mt-1.5">
-        Stage {photo.stage} · {photo.completedAt ? new Date(photo.completedAt).toLocaleDateString('en-IN') : '—'}
-      </p>
+      <div className="text-center text-xs text-gray-500 font-semibold mt-1.5 flex flex-col gap-0.5">
+        <span className="text-gray-800">{photo.label || `Stage ${photo.stage} Progress`}</span>
+        <span>{photo.completedAt ? new Date(photo.completedAt).toLocaleDateString('en-IN') : 'Date Unverified'}</span>
+      </div>
     </div>
   );
 }
@@ -166,6 +167,16 @@ export default function ConsumerTimeline() {
 
   const labPassed = labQuality?.finalDecision === 'PASS';
 
+  const allStagesPhotos = [...(farmOrigin?.cropPhotos || [])].map(p => ({ ...p, label: `Stage ${p.stage} Progress` }));
+  if (collectorVerification?.aiVerification?.leafPhotoUrl) {
+    allStagesPhotos.push({
+      stage: 5,
+      url: collectorVerification.aiVerification.leafPhotoUrl,
+      completedAt: collectorVerification.harvestDate,
+      label: 'Stage 5: Final Harvest (AI)'
+    });
+  }
+  allStagesPhotos.sort((a, b) => a.stage - b.stage);
   return (
     <div className="min-h-screen bg-[#F7FBF7] pb-24 font-sans">
 
@@ -226,6 +237,19 @@ export default function ConsumerTimeline() {
         </div>
       </div>
 
+      {/* ── VISUAL GROWTH JOURNEY ─────────────────────────────────────────── */}
+      {allStagesPhotos.length > 0 && (
+        <div className="max-w-md mx-auto px-4 pt-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 relative overflow-hidden">
+             <div className="flex items-center gap-2 mb-3 px-1 text-green-700">
+                <Leaf size={16} />
+                <h3 className="text-[11px] font-black uppercase tracking-widest">Crop Journey (Stages 1-5)</h3>
+             </div>
+             <PhotoCarousel photos={allStagesPhotos} />
+          </div>
+        </div>
+      )}
+
       {/* ── TIMELINE ──────────────────────────────────────────────────────── */}
       <div className="max-w-md mx-auto px-4 pt-8 relative">
         {/* Vertical line */}
@@ -249,12 +273,7 @@ export default function ConsumerTimeline() {
                   <DataRow label="Soil Type" value={farmOrigin.soilType} />
                   <DataRow label="Estimated Qty" value={farmOrigin.estimatedQuantityKg ? `${farmOrigin.estimatedQuantityKg} Kg` : null} />
                 </div>
-                {farmOrigin.cropPhotos?.length > 0 && (
-                  <div className="px-4 pb-4 pt-2">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Field Progress Photos</p>
-                    <PhotoCarousel photos={farmOrigin.cropPhotos} />
-                  </div>
-                )}
+
               </div>
             </TNode>
           )}
